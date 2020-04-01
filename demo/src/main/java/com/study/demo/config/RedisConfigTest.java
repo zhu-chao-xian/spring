@@ -11,10 +11,7 @@ import org.springframework.data.redis.core.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
@@ -107,9 +104,20 @@ public class RedisConfigTest {
         Map<String,Object> map = new HashMap<>();
         map.put("name","赵云");
         map.put("age",18);
-        hashOperations.put("user:map","id","6");
-        hashOperations.putAll("user:map",map);
+        String key = "user:map";
+
+        //hashOperations.put("user:map","id","6");
+        //hashOperations.putAll("user:map",map);
         Object obj = hashOperations.entries("user:map");
         System.out.println("obj: "+obj);
+        List<String> mapStr = new ArrayList<>();
+        List<String> mapStr2 = new ArrayList<>();
+        mapStr.add("name");
+        mapStr.add("age");
+        mapStr2.add("name");
+        Object obj2 = hashOperations.multiGet(key,Collections.singleton(mapStr));
+        Object obj3 = hashOperations.multiGet(key,Collections.singleton(mapStr2));
+        System.out.println("obj2: "+obj2);
+        System.out.println("obj3: "+obj3);
     }
 }
