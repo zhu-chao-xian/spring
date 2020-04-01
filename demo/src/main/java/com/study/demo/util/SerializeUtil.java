@@ -1,4 +1,4 @@
-package com.study.demo.commom;
+package com.study.demo.util;
 
 import java.io.*;
 
