@@ -17,29 +17,14 @@ import java.util.concurrent.TimeUnit;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class RedisConfigTest {
-    @Autowired
+
+    @Resource
     private StringRedisTemplate stringRedisTemplate;
 
-    @Autowired
+    @Resource
     private RedisTemplate redisTemplate;
 
-    @Resource
-    private ValueOperations<String,Object> valueOperations;
 
-    @Autowired
-    private HashOperations<String, String, Object> hashOperations;
-
-    @Autowired
-    private ListOperations<String, Object> listOperations;
-
-    @Autowired
-    private SetOperations<String, Object> setOperations;
-
-    @Autowired
-    private ZSetOperations<String, Object> zSetOperations;
-
-    @Resource
-    private RedisService redisService;
 
     @Test
     public void testObj() throws Exception{
@@ -47,11 +32,19 @@ public class RedisConfigTest {
         userVo.setId(5);
         userVo.setName("测试dfas");
         userVo.setAge("2");
-        ValueOperations<String,Object> operations = redisTemplate.opsForValue();
-        redisService.expireKey("name",20, TimeUnit.SECONDS);
-        String key = RedisKeyUtil.getKey(UserInfo.Table,"name",userVo.getName());
-        UserInfo vo = (UserInfo) operations.get(key);
-        System.out.println(vo);
+        String name = "吴星宇";
+        ValueOperations<String,Object> valueOperations = redisTemplate.opsForValue();
+        //key = t_User:id
+        //String key = RedisKeyUtil.getKey(UserInfo.Table,"5");
+        //valueOperations.set(key,userVo);
+        //UserInfo vo = (UserInfo) operations.get(key);
+        if(!redisTemplate.hasKey(name)) {
+            valueOperations.set("name", name);
+        }else{
+            redisTemplate.delete("name");
+        }
+        String newname = (String) valueOperations.get("name");
+        System.out.println(newname);
     }
 
     @Test
@@ -115,9 +108,6 @@ public class RedisConfigTest {
         mapStr.add("name");
         mapStr.add("age");
         mapStr2.add("name");
-        Object obj2 = hashOperations.multiGet(key,Collections.singleton(mapStr));
-        Object obj3 = hashOperations.multiGet(key,Collections.singleton(mapStr2));
-        System.out.println("obj2: "+obj2);
-        System.out.println("obj3: "+obj3);
+
     }
 }
