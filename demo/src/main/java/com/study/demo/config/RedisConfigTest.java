@@ -1,18 +1,15 @@
 package com.study.demo.config;
 
+import com.google.gson.Gson;
 import com.study.demo.pojo.UserInfo;
-import com.study.demo.sevice.RedisService;
-import com.study.demo.util.RedisKeyUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -40,8 +37,6 @@ public class RedisConfigTest {
         //UserInfo vo = (UserInfo) operations.get(key);
         if(!redisTemplate.hasKey(name)) {
             valueOperations.set("name", name);
-        }else{
-            redisTemplate.delete("name");
         }
         String newname = (String) valueOperations.get("name");
         System.out.println(newname);
@@ -53,10 +48,20 @@ public class RedisConfigTest {
         userInfo.setId(1);
         userInfo.setName("张飞");
         userInfo.setAge("78");
+        Gson gson = new Gson();
+        //String jsonUser = gson.toJson(userInfo);
         ValueOperations<String,Object> operations = redisTemplate.opsForValue();
-        operations.set("test",userInfo);
-        UserInfo u = (UserInfo) operations.get("test");
-        System.out.println(u.toString());
+        String key = "t_user" ;
+        if(redisTemplate.hasKey(key)){
+            redisTemplate.delete(key);
+
+        }else{
+
+        }
+        operations.set(key,userInfo);
+        UserInfo u = (UserInfo) operations.get(key);
+        //UserInfo userInfo1 = gson.fromJson(u,UserInfo.class);
+        System.out.println(gson.toJson(u));
     }
 
     @Test
@@ -99,7 +104,7 @@ public class RedisConfigTest {
         map.put("age",18);
         String key = "user:map";
 
-        //hashOperations.put("user:map","id","6");
+        hashOperations.put("user:map","id","6");
         //hashOperations.putAll("user:map",map);
         Object obj = hashOperations.entries("user:map");
         System.out.println("obj: "+obj);
