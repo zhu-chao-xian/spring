@@ -44,7 +44,6 @@ public class AcknowledgeController {
             rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
             rabbitTemplate.setExchange(env.getProperty("simple.mq.exchange.name"));
             rabbitTemplate.setRoutingKey(env.getProperty("simple.mq.routing.key.name"));
-
             Message message=MessageBuilder.withBody(objectMapper.writeValueAsBytes(user)).setDeliveryMode(MessageDeliveryMode.PERSISTENT).build();
             rabbitTemplate.convertAndSend(message);
         }catch (Exception e){

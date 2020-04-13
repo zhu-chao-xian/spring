@@ -1,9 +1,14 @@
 package com.debug.steadyjack.mapper;
 
 import com.debug.steadyjack.entity.User;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserMapper {
     int deleteByPrimaryKey(Integer id);
 

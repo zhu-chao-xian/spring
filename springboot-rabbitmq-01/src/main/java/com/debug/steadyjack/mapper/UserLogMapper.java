@@ -1,7 +1,9 @@
 package com.debug.steadyjack.mapper;
 
 import com.debug.steadyjack.entity.UserLog;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserLogMapper {
     int deleteByPrimaryKey(Integer id);
 

@@ -2,7 +2,9 @@ package com.debug.steadyjack.mapper;
 
 import com.debug.steadyjack.entity.Product;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ProductMapper {
     int deleteByPrimaryKey(Integer id);
 

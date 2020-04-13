@@ -1,9 +1,11 @@
 package com.debug.steadyjack.mapper;
 
 import com.debug.steadyjack.entity.OrderRecord;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface OrderRecordMapper {
     int deleteByPrimaryKey(Integer id);
 
