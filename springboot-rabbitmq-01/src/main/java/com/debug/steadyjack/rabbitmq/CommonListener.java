@@ -28,24 +28,24 @@ public class CommonListener {
      * 监听消费消息
      * @param message
      */
-//    @RabbitListener(queues = "${basic.info.mq.queue.name}",containerFactory = "singleListenerContainer")
-//    public void consumeMessage(@Payload byte[] message){
-//        try {
-//            //TODO：接收String
-//            /*String result=new String(message,"UTF-8");
-//            log.info("接收到消息： {} ",result);*/
-//
-//            //TODO：接收对象
-//            /*User user=objectMapper.readValue(message, User.class);
-//            log.info("接收到消息： {} ",user);*/
-//
-//            //TODO：接收多类型字段信息
-//            Map<String,Object> resMap=objectMapper.readValue(message,Map.class);
-//            log.info("接收到消息： {} ",resMap);
-//        }catch (Exception e){
-//            log.error("监听消费消息 发生异常： ",e.fillInStackTrace());
-//        }
-//    }
+    @RabbitListener(queues = "${basic.info.mq.queue.name}",containerFactory = "singleListenerContainer")
+    public void consumeMessage(@Payload byte[] message){
+        try {
+            //TODO：接收String
+            String result=new String(message,"UTF-8");
+            log.info("接收到消息： {} ",result);
+
+            //TODO：接收对象
+            //User user=objectMapper.readValue(message, User.class);
+            //log.info("接收到消息： {} ",user);
+
+            //TODO：接收多类型字段信息
+            //Map<String,Object> resMap=objectMapper.readValue(message,Map.class);
+            //log.info("接收到消息： {} ",resMap);
+        }catch (Exception e){
+            log.error("监听消费消息 发生异常： ",e.fillInStackTrace());
+        }
+    }
 
     /**
      * 监听消费消息-map多类型字段信息

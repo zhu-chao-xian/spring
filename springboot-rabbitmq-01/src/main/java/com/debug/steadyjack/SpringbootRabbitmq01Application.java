@@ -2,6 +2,7 @@ package com.debug.steadyjack;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -26,6 +27,8 @@ public class SpringbootRabbitmq01Application extends SpringBootServletInitialize
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringbootRabbitmq01Application.class, args);
+		SpringApplication springBootApplication = new SpringApplication(SpringbootRabbitmq01Application.class);
+		springBootApplication.setBannerMode(Banner.Mode.OFF);
+		springBootApplication.run(SpringbootRabbitmq01Application.class, args);
 	}
 }
