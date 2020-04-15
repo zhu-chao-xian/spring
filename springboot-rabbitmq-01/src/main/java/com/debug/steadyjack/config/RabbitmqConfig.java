@@ -73,16 +73,20 @@ public class RabbitmqConfig {
 
     @Bean
     public RabbitTemplate rabbitTemplate(){
+        //消息发送成功，对应application.properties的spring.rabbitmq.publisher-confirms=true
         connectionFactory.setPublisherConfirms(true);
+        //消息发送失败，对应application.properties的spring.rabbitmq.publisher-returns=true
         connectionFactory.setPublisherReturns(true);
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMandatory(true);
+        //消息发送到exchange回调 需设置：spring.rabbitmq.publisher-confirms=true
         rabbitTemplate.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {
             @Override
             public void confirm(CorrelationData correlationData, boolean ack, String cause) {
                 log.info("消息发送成功:correlationData({}),ack({}),cause({})",correlationData,ack,cause);
             }
         });
+        //消息从exchange发送到queue失败回调  需设置：spring.rabbitmq.publisher-returns=true
         rabbitTemplate.setReturnCallback(new RabbitTemplate.ReturnCallback() {
             @Override
             public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
@@ -148,12 +152,16 @@ public class RabbitmqConfig {
         return BindingBuilder.bind(simpleQueue()).to(simpleExchange()).with(env.getProperty("simple.mq.routing.key.name"));
     }
 
+    /**
+     * 注入监听器
+     */
     @Autowired
     private SimpleListener simpleListener;
 
 
     @Bean(name = "simpleContainer")
     public SimpleMessageListenerContainer simpleContainer(@Qualifier("simpleQueue") Queue simpleQueue){
+        
         SimpleMessageListenerContainer container=new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.setMessageConverter(new Jackson2JsonMessageConverter());
